@@ -31,7 +31,7 @@ def generate_features(ego_nodes, dataset_directory = '../Dataset/facebook/'):
 
 if __name__ == '__main__':
     from adjacency_list import generate_adjacency_list
-    adjacency_list, ego_nodes = generate_adjacency_list()
+    nodes, adjacency_list, ego_nodes = generate_adjacency_list()
     features, gender_featnum = generate_features(ego_nodes)
     print(features)
     print(gender_featnum)

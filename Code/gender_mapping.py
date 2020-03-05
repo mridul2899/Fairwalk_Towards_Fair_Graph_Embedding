@@ -1,4 +1,4 @@
-def map_nodes_gender(ego_nodes, gender_featnum, features, dataset_directory = '../Dataset/facebook/'):
+def map_nodes_gender(nodes, adjacency_list, ego_nodes, gender_featnum, features, dataset_directory = '../Dataset/facebook/'):
     """
     map_nodes_gender(ego_nodes, gender_featnum, features, dataset_directory) maps all the nodes in the network to their respective gender
     It takes list of ego nodes, list of gender feature numbers, dictionary of features of ego nodes and dataset directory as arguments
@@ -42,13 +42,21 @@ def map_nodes_gender(ego_nodes, gender_featnum, features, dataset_directory = '.
         egofeat.close()
         feat.close()
     
-    return gender_1, gender_2
+    gender_wise_adjacency_list = [[] for i in range(max(nodes) + 1)]
+    for i in range(max(nodes) + 1):
+        gender_1_list = [node for node in adjacency_list[i] if gender_1[node] == 1]
+        gender_2_list = [node for node in adjacency_list[i] if gender_2[node] == 1]
+        gender_wise_adjacency_list[i].append(gender_1_list)
+        gender_wise_adjacency_list[i].append(gender_2_list)
+    
+    return gender_1, gender_2, gender_wise_adjacency_list
 
 if __name__ == '__main__':
     from adjacency_list import generate_adjacency_list
     from feature_extraction import generate_features
-    adjacency_list, ego_nodes = generate_adjacency_list()
+    nodes, adjacency_list, ego_nodes = generate_adjacency_list()
     features, gender_featnum = generate_features(ego_nodes)
-    gender_1, gender_2 = map_nodes_gender(ego_nodes, gender_featnum, features)
+    gender_1, gender_2, gender_wise_adjacency_list = map_nodes_gender(nodes, adjacency_list, ego_nodes, gender_featnum, features)
     print(gender_1)
     print(gender_2)
+    print(gender_wise_adjacency_list)

@@ -61,9 +61,9 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
     for node in nodes:
         adjacency_list[node].sort()
     
-    return adjacency_list, ego_nodes
+    return nodes, adjacency_list, ego_nodes
 
 if __name__ == '__main__':
-    adjacency_list, ego_nodes = generate_adjacency_list()
+    nodes, adjacency_list, ego_nodes = generate_adjacency_list()
     print(adjacency_list)
     print(ego_nodes)
