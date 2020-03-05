@@ -1,0 +1,58 @@
+import os
+
+def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
+    """
+    generate_adjacency_list(path_to_dataset) generates adjacency list for all the nodes in the network
+    It takes path to dataset as the argument
+    It scrapes .circles and .edges files for all the ego nodes for this purpose
+    """
+    if dataset_directory[-1] != '/':
+        dataset_directory = dataset_directory + '/'
+    
+    all_files = os.listdir(dataset_directory)
+    egofeat_files = [file for file in all_files if (file.split('.')[1] == 'egofeat')]
+    ego_nodes = [int(file.split('.')[0]) for file in egofeat_files]
+    
+    nodes = []
+    for node in ego_nodes:
+        if node not in nodes:
+            nodes.append(node)
+        circles = open(dataset_directory + str(node) + '.circles', 'r')
+        for line in circles:
+            line = line.split()
+            for n in line[1:]:
+                if int(n) not in nodes:
+                    nodes.append(int(n))
+        edges = open(dataset_directory + str(node) + '.edges', 'r')
+        for line in edges:
+            line = line.split()
+            for n in line:
+                if int(n) not in nodes:
+                    nodes.append(int(n))
+
+    adjacency_list = [[] for i in range(max(nodes) + 1)]
+    for node in ego_nodes:
+        circles = open(dataset_directory + str(node) + '.circles', 'r')
+        for line in circles:
+            line = line.split()
+            for n in line[1:]:
+                if int(n) not in adjacency_list[node]:
+                    adjacency_list[node].append(int(n))
+                    adjacency_list[int(n)].append(node)
+        edges = open(dataset_directory + str(node) + '.edges', 'r')
+        for line in edges:
+            line = line.split()
+            one = int(line[0])
+            two = int(line[1])
+            if two not in adjacency_list[one]:
+                adjacency_list[one].append(two)
+                adjacency_list[two].append(one)
+    
+    for node in nodes:
+        adjacency_list[node].sort()
+    
+    return adjacency_list
+
+if __name__ == '__main__':
+    adjacency_list = generate_adjacency_list()
+    print(adjacency_list)
