@@ -46,8 +46,10 @@ def map_nodes_gender(nodes, adjacency_list, ego_nodes, gender_featnum, features,
     for i in range(max(nodes) + 1):
         gender_1_list = [node for node in adjacency_list[i] if gender_1[node] == 1]
         gender_2_list = [node for node in adjacency_list[i] if gender_2[node] == 1]
+        gender_3_list = [node for node in adjacency_list[i] if (gender_1[node] == 0 and gender_2[node] == 0)]
         gender_wise_adjacency_list[i].append(gender_1_list)
         gender_wise_adjacency_list[i].append(gender_2_list)
+        gender_wise_adjacency_list[i].append(gender_3_list)
     
     return gender_1, gender_2, gender_wise_adjacency_list
 

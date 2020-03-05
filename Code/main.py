@@ -8,6 +8,4 @@ if __name__ == '__main__':
     nodes, adjacency_list, ego_nodes = generate_adjacency_list(dataset_directory)
     features, gender_featnum = generate_features(ego_nodes, dataset_directory)
     gender_1, gender_2, gender_wise_adjacency_list = map_nodes_gender(nodes, adjacency_list, ego_nodes, gender_featnum, features, dataset_directory)
-#    print(gender_1)
-#    print(gender_2)
     print(gender_wise_adjacency_list)
