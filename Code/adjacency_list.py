@@ -2,10 +2,12 @@ import os
 
 def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
     """
-    generate_adjacency_list(path_to_dataset) generates adjacency list for all the nodes in the network
+    generate_adjacency_list(dataset_directory) generates adjacency list for all the nodes in the network
     It takes path to dataset as the argument
+    It returns a 2-D adjacency list for all nodes in the network
     It scrapes .circles and .edges files for all the ego nodes for this purpose
     """
+    
     if dataset_directory[-1] != '/':
         dataset_directory = dataset_directory + '/'
     
@@ -13,6 +15,8 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
     egofeat_files = [file for file in all_files if (file.split('.')[1] == 'egofeat')]
     ego_nodes = [int(file.split('.')[0]) for file in egofeat_files]
     
+    ego_nodes.sort()
+
     nodes = []
     for node in ego_nodes:
         if node not in nodes:
@@ -51,8 +55,9 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
     for node in nodes:
         adjacency_list[node].sort()
     
-    return adjacency_list
+    return adjacency_list, ego_nodes
 
 if __name__ == '__main__':
-    adjacency_list = generate_adjacency_list()
+    adjacency_list, ego_nodes = generate_adjacency_list()
     print(adjacency_list)
+    print(ego_nodes)
