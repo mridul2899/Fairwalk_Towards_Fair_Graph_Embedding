@@ -12,15 +12,19 @@ def generate_features(ego_nodes, dataset_directory = '../Dataset/facebook/'):
     
     features = {}
     gender_featnum = []
+    
     for node in ego_nodes:
         featnames = open(dataset_directory + str(node) + '.featnames')
         features_node = []
+
         for line in featnames:
             features_node.append(int(line.split(';')[-1].split()[-1]))
             if line.split(';')[0].split()[1] == 'gender':
                 if int(line.split(';')[-1].split()[-1]) not in gender_featnum:
                     gender_featnum.append(int(line.split(';')[-1].split()[-1]))
+        
         features[node] = features_node
+        featnames.close()
     
     gender_featnum.sort()
     return features, gender_featnum

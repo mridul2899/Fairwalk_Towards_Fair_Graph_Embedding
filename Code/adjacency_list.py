@@ -27,12 +27,15 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
             for n in line[1:]:
                 if int(n) not in nodes:
                     nodes.append(int(n))
+        circles.close()
+        
         edges = open(dataset_directory + str(node) + '.edges', 'r')
         for line in edges:
             line = line.split()
             for n in line:
                 if int(n) not in nodes:
                     nodes.append(int(n))
+        edges.close()
 
     adjacency_list = [[] for i in range(max(nodes) + 1)]
     for node in ego_nodes:
@@ -43,6 +46,8 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
                 if int(n) not in adjacency_list[node]:
                     adjacency_list[node].append(int(n))
                     adjacency_list[int(n)].append(node)
+        circles.close()
+
         edges = open(dataset_directory + str(node) + '.edges', 'r')
         for line in edges:
             line = line.split()
@@ -51,6 +56,7 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
             if two not in adjacency_list[one]:
                 adjacency_list[one].append(two)
                 adjacency_list[two].append(one)
+        edges.close()
     
     for node in nodes:
         adjacency_list[node].sort()
