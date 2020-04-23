@@ -3,6 +3,7 @@ from feature_extraction import generate_features
 from gender_mapping import map_nodes_gender
 from fairwalk import generate_fairwalks
 from generate_embeddings import generate_embeddings
+from hadamard_vectors import generate_hadamard_vectors
 
 if __name__ == '__main__':
     dataset_directory = "../Dataset/facebook/"
@@ -18,6 +19,9 @@ if __name__ == '__main__':
     window_size = 10
     directory = '../Embeddings/'
     directory = generate_embeddings(ego_nodes, fair_walks, nodes, ndims, window_size, directory)
-    file = open(directory + str(ego_nodes[0]) + '.emb', 'r')
+
+    directory = generate_hadamard_vectors(ego_nodes)
+
+    file = open(directory + 'hadamard_' + str(ego_nodes[0]) + '.txt', 'r')
     for i in range(5):
         print(file.readline())
