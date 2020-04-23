@@ -1,10 +1,10 @@
 def map_nodes_gender(nodes, adjacency_lists, ego_nodes, gender_featnum, features, dataset_directory = '../Dataset/facebook/'):
     """
-    map_nodes_gender(ego_nodes, gender_featnum, features, dataset_directory) maps all the nodes in the network to their respective gender
-    It takes list of ego nodes, list of gender feature numbers, dictionary of features of ego nodes and dataset directory as arguments
-    It returns dictionaries gender_1, gender_2, which tells whether a node has positive for gender_1, gender_2
-    It also returns a gender wise adjacency list for all the nodes in the network
-    It scrapes .egofeat and .feat files for all the ego nodes for this purpose
+    map_nodes_gender(nodes, adjacency_lists, ego_nodes, gender_featnum, features, dataset_directory) maps all the nodes in the network to their respective gender
+    It takes dictionary of nodes, dictionary of adjacency lists, list of ego nodes, list of gender feature numbers, dictionary of features of ego nodes and dataset directory as arguments.
+    It returns dictionaries gender_1, gender_2, which tells whether a node has positive for gender_1, gender_2.
+    It also returns a gender wise adjacency list for all the nodes in the network.
+    It scrapes .egofeat and .feat files for all the ego nodes for this purpose.
     """
 
     if dataset_directory[-1] != '/':

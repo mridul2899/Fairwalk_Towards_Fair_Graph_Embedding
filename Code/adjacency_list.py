@@ -4,7 +4,7 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
     """
     generate_adjacency_list(dataset_directory) generates adjacency list for all the nodes in the network
     It takes path to dataset as the argument
-    It returns a list of all the non-isolated nodes in the network, a 2-D adjacency list for all nodes in the network and a list of ego nodes
+    It returns dictionary of all the nodes for each ego-network, dictionary having adjacency lists for all nodes in all the ego-networks and list of ego nodes
     It scrapes .circles and .edges files for all the ego nodes for this purpose
     """
 

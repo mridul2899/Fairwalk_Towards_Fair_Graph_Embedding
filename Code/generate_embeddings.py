@@ -4,11 +4,11 @@ import multiprocessing as mp
 
 def generate_embeddings(ego_nodes, fair_walks, nodes, ndims = 128, window_size = 10, directory = '../Embeddings'):
     """
-    generate_embeddings(fair_walks, nodes, ndims, window_size, directory) generates vector embeddings for all the nodes in the network
-    It uses a similar method as node2vec for generating embeddings from the fairwalk traces
-    It takes dictionary of fairwalk traces, a list of non-isolated nodes as arguments
+    generate_embeddings(ego_nodes, fair_walks, nodes, ndims, window_size, directory) generates vector embeddings for all the nodes in the network
+    It uses a similar method as node2vec for generating embeddings from the fairwalk traces.
+    It takes list of ego nodes, dictionary of fairwalk traces, a dictionary of nodes corresponding to each ego node as arguments
     Additionally, it takes the dimensions for embeddings and window size for the ngram model and directory for output file as arguments
-    It returns path for the file containing generated embeddings
+    It returns path for directory containing the files having generated embeddings
     """
     num_walks = len(fair_walks[ego_nodes[0]][0])
 

@@ -2,9 +2,9 @@ import random
 
 def generate_fairwalks(ego_nodes, nodes, gender_wise_adjacency_lists, num_walks = 20, walk_len = 80):
     """
-    generate_fairwalks(nodes, gender_wise_adjacency_list) generates fairwalks for all the non-isolated nodes in the network
-    It takes list of nodes, a gender wise adjacency list for all the nodes in the network, number of walks and lenght of each walk as its arguments
-    It returns a dictionary fair_walks, which contains num_walks iterations of fairwalks for all the nodes, each of length walk_len
+    generate_fairwalks(ego_nodes, nodes, gender_wise_adjacency_list) generates fairwalks for all the nodes in all of the ego-networks
+    It takes list of ego nodes, list of nodes, a gender wise adjacency list for all the nodes in the network, number of walks and lenght of each walk as its arguments
+    It returns a dictionary fair_walks, which contains num_walks iterations of fairwalks for all the nodes of each ego-network, each of length walk_len
     """
 
     fair_walks = {}
