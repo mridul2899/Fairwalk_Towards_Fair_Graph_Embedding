@@ -6,4 +6,4 @@ The dataset used here is Social Circles: ego-Facebook from Stanford Network Anal
 The dataset can be found at: http://snap.stanford.edu/data/ego-Facebook.html <br>
 Fairwalk is based on node2vec method for generating embeddings for graph nodes. Find node2vec research paper [here](https://cs.stanford.edu/~jure/pubs/node2vec-kdd16.pdf). <br><br>
 
-Progress so far: Generation of embeddings from fairwalk traces. <br>
+Progress so far: Generation of hadamard vectors for all pairs of nodes, for each ego-network.
