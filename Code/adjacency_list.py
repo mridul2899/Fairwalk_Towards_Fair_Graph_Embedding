@@ -15,55 +15,56 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
     egofeat_files = [file for file in all_files if (file.split('.')[1] == 'egofeat')]
     ego_nodes = [int(file.split('.')[0]) for file in egofeat_files]
 
-    ego_nodes.sort()
-
-    nodes = []
-    for node in ego_nodes:
-        if node not in nodes:
-            nodes.append(node)
-        circles = open(dataset_directory + str(node) + '.circles', 'r')
+    nodes = {}
+    for ego_node in ego_nodes:
+        nodes[ego_node] = set()
+        circles = open(dataset_directory + str(ego_node) + '.circles', 'r')
         for line in circles:
             line = line.split()
             for n in line[1:]:
-                if int(n) not in nodes:
-                    nodes.append(int(n))
+                nodes[ego_node].add(int(n))
         circles.close()
 
-        edges = open(dataset_directory + str(node) + '.edges', 'r')
+        edges = open(dataset_directory + str(ego_node) + '.edges', 'r')
         for line in edges:
             line = line.split()
             for n in line:
-                if int(n) not in nodes:
-                    nodes.append(int(n))
+                nodes[ego_node].add(int(n))
         edges.close()
 
-    adjacency_list = [[] for i in range(max(nodes) + 1)]
-    for node in ego_nodes:
-        circles = open(dataset_directory + str(node) + '.circles', 'r')
+    adjacency_lists = {}
+    for ego_node in ego_nodes:
+        adjacency_list = {}
+        adjacency_list[ego_node] = set()
+
+        circles = open(dataset_directory + str(ego_node) + '.circles', 'r')
         for line in circles:
             line = line.split()
             for n in line[1:]:
-                if int(n) not in adjacency_list[node]:
-                    adjacency_list[node].append(int(n))
-                    adjacency_list[int(n)].append(node)
+                if int(n) not in adjacency_list.keys():
+                    adjacency_list[int(n)] = set()
+                adjacency_list[ego_node].add(int(n))
+                adjacency_list[int(n)].add(ego_node)
         circles.close()
 
-        edges = open(dataset_directory + str(node) + '.edges', 'r')
+        edges = open(dataset_directory + str(ego_node) + '.edges', 'r')
         for line in edges:
             line = line.split()
             one = int(line[0])
             two = int(line[1])
-            if two not in adjacency_list[one]:
-                adjacency_list[one].append(two)
-                adjacency_list[two].append(one)
+            if one not in adjacency_list.keys():
+                adjacency_list[one] = set()
+            if two not in adjacency_list.keys():
+                adjacency_list[two] = set()
+            adjacency_list[one].add(two)
+            adjacency_list[two].add(one)
         edges.close()
 
-    for node in nodes:
-        adjacency_list[node].sort()
+        adjacency_lists[ego_node] = adjacency_list
 
-    return nodes, adjacency_list, ego_nodes
+    return nodes, adjacency_lists, ego_nodes
 
 if __name__ == '__main__':
-    nodes, adjacency_list, ego_nodes = generate_adjacency_list()
-    print(adjacency_list)
+    nodes, adjacency_lists, ego_nodes = generate_adjacency_list()
+    print(adjacency_lists[0])
     print(ego_nodes)
