@@ -2,3 +2,5 @@
 *.pyc
 Code/__pycache__
 *.ipynb_checkpoints
+Embeddings/hadamard*
+Code/test.py
