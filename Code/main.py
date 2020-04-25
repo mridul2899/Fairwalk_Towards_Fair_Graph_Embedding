@@ -3,25 +3,37 @@ from feature_extraction import generate_features
 from gender_mapping import map_nodes_gender
 from fairwalk import generate_fairwalks
 from generate_embeddings import generate_embeddings
-from hadamard_vectors import generate_hadamard_vectors
+from find_similar_non_friends import find_similar_non_friends
+from map_similar_nodes import map_similar_nodes
+from not_connected_samples import find_not_connected_samples
+
+# from hadamard_vectors import generate_hadamard_vectors
 
 if __name__ == '__main__':
     dataset_directory = "../Dataset/facebook/"
-    nodes, adjacency_lists, ego_nodes = generate_adjacency_list(dataset_directory)
+    ego_nodes = generate_adjacency_list(dataset_directory)
+
     features, gender_featnum = generate_features(ego_nodes, dataset_directory)
-    gender_1, gender_2, gender_wise_adjacency_lists = map_nodes_gender(nodes, adjacency_lists, ego_nodes, gender_featnum, features, dataset_directory)
+
+    map_nodes_gender(ego_nodes, gender_featnum, features, dataset_directory)
 
     num_walks = 20
     walk_len = 80
-    fair_walks = generate_fairwalks(ego_nodes, nodes, gender_wise_adjacency_lists, num_walks, walk_len)
+    generate_fairwalks(ego_nodes, num_walks, walk_len)
 
     ndims = 128
     window_size = 10
-    directory = '../Embeddings/'
-    directory = generate_embeddings(ego_nodes, fair_walks, nodes, ndims, window_size, directory)
+    generate_embeddings(ego_nodes, ndims, window_size)
 
-    directory = generate_hadamard_vectors(ego_nodes)
+    find_similar_non_friends(ego_nodes)
 
-    file = open(directory + 'hadamard_' + str(ego_nodes[0]) + '.txt', 'r')
-    for i in range(5):
-        print(file.readline())
+    map_similar_nodes(ego_nodes)
+
+    find_not_connected_samples(ego_nodes)
+
+    # directory = generate_hadamard_vectors(ego_nodes)
+
+
+    # file = open(directory + 'hadamard_' + str(ego_nodes[0]) + '.txt', 'r')
+    # for i in range(5):
+    #     print(file.readline())

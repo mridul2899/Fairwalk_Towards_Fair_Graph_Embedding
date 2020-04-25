@@ -1,10 +1,14 @@
 import os
+import random
 
 def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
     """
-    generate_adjacency_list(dataset_directory) generates adjacency list for all the nodes in the network
-    It takes path to dataset as the argument
-    It returns dictionary of all the nodes for each ego-network, dictionary having adjacency lists for all nodes in all the ego-networks and list of ego nodes
+    generate_adjacency_list(dataset_directory) generates adjacencys list for all the nodes in all the ego networks.
+    It takes path to dataset as the argument.
+    The edges are extracted and split into 80% and 20%, five times for each ego-network, and saved in ../Edges directory.
+    The training edges (80%) are then used to form adjacency lists for all the nodes in the training edges file.
+    These adjacency lists are saved in ../Adjacency_Lists directory.
+    It returns the list of ego nodes.
     It scrapes .circles and .edges files for all the ego nodes for this purpose
     """
 
@@ -32,19 +36,15 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
                 nodes[ego_node].add(int(n))
         edges.close()
 
-    adjacency_lists = {}
+    edges_list = {}
     for ego_node in ego_nodes:
-        adjacency_list = {}
-        adjacency_list[ego_node] = set()
+        edge_list = set()
 
         circles = open(dataset_directory + str(ego_node) + '.circles', 'r')
         for line in circles:
             line = line.split()
             for n in line[1:]:
-                if int(n) not in adjacency_list.keys():
-                    adjacency_list[int(n)] = set()
-                adjacency_list[ego_node].add(int(n))
-                adjacency_list[int(n)].add(ego_node)
+                edge_list.add((min(ego_node, int(n)), max(ego_node, int(n))))
         circles.close()
 
         edges = open(dataset_directory + str(ego_node) + '.edges', 'r')
@@ -52,19 +52,63 @@ def generate_adjacency_list(dataset_directory = "../Dataset/facebook/"):
             line = line.split()
             one = int(line[0])
             two = int(line[1])
-            if one not in adjacency_list.keys():
-                adjacency_list[one] = set()
-            if two not in adjacency_list.keys():
-                adjacency_list[two] = set()
-            adjacency_list[one].add(two)
-            adjacency_list[two].add(one)
+            edge_list.add((min(one, two), max(one, two)))
         edges.close()
+        edges_list[ego_node] = edge_list
 
-        adjacency_lists[ego_node] = adjacency_list
+    try:
+        os.mkdir('../Edges/')
+    except:
+        pass
 
-    return nodes, adjacency_lists, ego_nodes
+    for ego_node in ego_nodes:
+        edges = list(edges_list[ego_node])
+        random.shuffle(edges)
+        size = len(edges)
+        for i in range(5):
+            edges_20 = edges[i * (size // 5):(i + 1) * (size // 5)]
+            edges_80 = edges[:i * (size // 5)] + edges[(i + 1) * (size // 5):]
 
-if __name__ == '__main__':
-    nodes, adjacency_lists, ego_nodes = generate_adjacency_list()
-    print(adjacency_lists[0])
-    print(ego_nodes)
+            file = open('../Edges/edges_20_{}_{}.txt'.format(ego_node, i), 'w')
+            for edge in edges_20:
+                file.write('{} {}\n'.format(edge[0], edge[1]))
+            file.close()
+
+            file = open('../Edges/edges_80_{}_{}.txt'.format(ego_node, i), 'w')
+            for edge in edges_80:
+                file.write('{} {}\n'.format(edge[0], edge[1]))
+            file.close()
+
+    try:
+        os.mkdir('../Adjacency_Lists/')
+    except:
+        pass
+
+    for ego_node in ego_nodes:
+        for i in range(5):
+            file = open('../Edges/edges_80_{}_{}.txt'.format(ego_node, i), 'r')
+            adjacency_list = {}
+            for line in file:
+                if len(line) == 0:
+                    continue
+                line = line.split()
+                node1, node2 = int(line[0]), int(line[1])
+                if node1 not in adjacency_list.keys():
+                    adjacency_list[node1] = set()
+                if node2 not in adjacency_list.keys():
+                    adjacency_list[node2] = set()
+                adjacency_list[node1].add(node2)
+                adjacency_list[node2].add(node1)
+            file.close()
+            keys = list(adjacency_list.keys())
+            keys.sort()
+
+            file = open('../Adjacency_Lists/adjacency_list_{}_{}.txt'.format(ego_node, i), 'w')
+            for key in keys:
+                file.write('{}'.format(key))
+                for node in adjacency_list[key]:
+                    file.write(' {}'.format(node))
+                file.write('\n')
+            file.close()
+
+    return ego_nodes

@@ -23,12 +23,4 @@ def generate_features(ego_nodes, dataset_directory = '../Dataset/facebook/'):
         features[ego_node] = features_node
         featnames.close()
     gender_featnum.sort()
-
     return features, gender_featnum
-
-if __name__ == '__main__':
-    from adjacency_list import generate_adjacency_list
-    nodes, adjacency_lists, ego_nodes = generate_adjacency_list()
-    features, gender_featnum = generate_features(ego_nodes)
-    print(features)
-    print(gender_featnum)
