@@ -1,6 +1,4 @@
-Implementation of **[Fairwalk: Towards Fair Graph Embedding](https://www.ijcai.org/Proceedings/2019/456)**
-
-# Fairwalk_Towards_Fair_Graph_Embedding
+Implementation of **[Fairwalk: Towards Fair Graph Embedding](https://www.ijcai.org/Proceedings/2019/456)** <br>
 This implementation has been done as a part of the Term Project for the course CS60016 - AI and Ethics, taught by Professor Animesh Mukherjee at IIT Kharagpur in Spring Semester 2020.
 
 # Summary
