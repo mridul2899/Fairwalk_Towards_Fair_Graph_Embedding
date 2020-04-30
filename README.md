@@ -23,7 +23,7 @@ Implementation of Random Forest Classifier with 100 trees for predicting friends
 Generation of results and evaluation of the fairness metrics - Statistical Parity, Equality of Representation (User Level and Network Level). <br>
 Implementation of graph embeddings with regular random walks for comparing results.
 
-# NOTE
+# Note
 The original Instagram dataset could not be used as the authors refused to share it. As per their suggestion, we used Social Circles: Facebook dataset from SNAP. <br>
 It was unclear from the research paper about the data on which Random Forest Classifier has been trained by the authors. As far as we could understand, the inputs were hadamard vectors for all the node pairs in the graph, and the output was supposed to be whether they should be recommended or not. However, in doing this, we faced a problem of data imbalance - number of false cases was much larger than true cases.
 
